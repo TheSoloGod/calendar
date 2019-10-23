@@ -45,6 +45,7 @@
 
 .calendar_content .today {
     color: #3B8FC7;
+    line-height: 12px;
 }
 .calendar_content div {
     float: left;
@@ -66,12 +67,15 @@
 
 .calendar_content div.past-date {
     cursor: initial;
-    color: #d5d5d5;
+    /*color: #d5d5d5;*/
+    color: black;
+    line-height: 12px;
 }
 .calendar_content div.today{
-    font-weight: bold;
+    /*font-weight: bold;*/
     font-size: 18px;
-    color: #409EDD;
+    color: black;
+    line-height: 12px;
 }
 .calendar_content div.selected {
     background-color: rgba(153, 153, 161, .2); /*rgba(170, 170, 176, .5) #aaaab0*/
@@ -114,4 +118,18 @@ button.switch-month:active {
 .calendar_header h2 {
     color: #409EDD;
     line-height: 1.7;
+}
+
+.blank {
+    color: #d5d5d5;
+}
+
+.calendar_content .text-date {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.calendar_content .day {
+    line-height: 12px;
 }

@@ -4,19 +4,33 @@ $( document ).ready(function() {
         makeWeek(calendar.weekline);
         calendar.datesBody.empty();
         var calMonthArray = makeMonthArray(passed_month, passed_year);
-        console.log(calMonthArray);
+
+        var monthArray1 = makeMonthArray(passed_month-1, passed_year);
+        var monthArray2 = makeMonthArray(passed_month+1, passed_year);
+
         var r = 0;
+        var dayArray1 = 0;
         var u = false;
         while(!u) {
             if(daysArray[r] == calMonthArray[0].weekday) { u = true }
             else {
-                calendar.datesBody.append('<div class="blank"></div>');
+                // calendar.datesBody.append('<div class="blank"></div>');
+                dayArray1 ++;
                 r++;
             }
         }
+        var monthPre = monthArray1.slice(monthArray1.length - dayArray1, monthArray1.length);
+        for (let i=0; i<monthPre.length; i++) {
+            let shownDate = monthPre[i].day;
+            let m = '<div class="blank">';
+            calendar.datesBody.append(m + shownDate + "</div>");
+        }
+
+        var dayArray2 = 0;
         for(var cell=0;cell<42-r;cell++) { // 42 date-cells in calendar
             if(cell >= calMonthArray.length) {
-                calendar.datesBody.append('<div class="blank"></div>');
+                // calendar.datesBody.append('<div class="blank"></div>');
+                dayArray2 ++;
             } else {
                 var shownDate = calMonthArray[cell].day;
                 // Later refactiroing -- iter_date not needed after "today" is found
@@ -27,12 +41,22 @@ $( document ).ready(function() {
                         || passed_month != today.getMonth()
                     )
                     && iter_date < today) {
-                    var m = '<div class="">';
+
+                    var m = '<div class="past-date">';
                 } else {
-                    var m = checkToday(iter_date)?'<div class="today">':"<div>";
+                    var m = checkToday(iter_date)?'<div class="today">':'<div class="day">';
                 }
-                calendar.datesBody.append(m + shownDate + "</div>");
+                calendar.datesBody.append(m
+                    + '<p class="text-date">' + shownDate + '</p>'
+                    + '<p id="' + shownDate + (passed_month + 1) + passed_year + '" class="text-content"></p>' + 'abc'+
+                    + '</div>');
             }
+        }
+        var monthNext = monthArray2.slice(0, dayArray2);
+        for (let i=0; i<monthNext.length; i++) {
+            let shownDate = monthNext[i].day;
+            let m = '<div class="blank">';
+            calendar.datesBody.append(m + shownDate + "</div>");
         }
 
         // var color = o[passed_month];
@@ -47,92 +71,92 @@ $( document ).ready(function() {
         var clicked = false;
         selectDates(selected);
 
-        clickedElement = calendar.datesBody.find('div');
-        clickedElement.on("click", function(){
-            clicked = $(this);
-            if (clicked.hasClass('past-date')) { return; }
-            var whichCalendar = calendar.name;
-            console.log(whichCalendar);
-            // Understading which element was clicked;
-            // var parentClass = $(this).parent().parent().attr('class');
-            if (firstClick && secondClick) {
-                thirdClicked = getClickedInfo(clicked, calendar);
-                var firstClickDateObj = new Date(firstClicked.year,
-                    firstClicked.month,
-                    firstClicked.date);
-                var secondClickDateObj = new Date(secondClicked.year,
-                    secondClicked.month,
-                    secondClicked.date);
-                var thirdClickDateObj = new Date(thirdClicked.year,
-                    thirdClicked.month,
-                    thirdClicked.date);
-                if (secondClickDateObj > thirdClickDateObj
-                    && thirdClickDateObj > firstClickDateObj) {
-                    secondClicked = thirdClicked;
-                    // then choose dates again from the start :)
-                    bothCals.find(".calendar_content").find("div").each(function(){
-                        $(this).removeClass("selected");
-                    });
-                    selected = {};
-                    selected[firstClicked.year] = {};
-                    selected[firstClicked.year][firstClicked.month] = [firstClicked.date];
-                    selected = addChosenDates(firstClicked, secondClicked, selected);
-                } else { // reset clicks
-                    selected = {};
-                    firstClicked = [];
-                    secondClicked = [];
-                    firstClick = false;
-                    secondClick = false;
-                    bothCals.find(".calendar_content").find("div").each(function(){
-                        $(this).removeClass("selected");
-                    });
-                }
-            }
-            if (!firstClick) {
-                firstClick = true;
-                firstClicked = getClickedInfo(clicked, calendar);
-                selected[firstClicked.year] = {};
-                selected[firstClicked.year][firstClicked.month] = [firstClicked.date];
-            } else {
-                console.log('second click');
-                secondClick = true;
-                secondClicked = getClickedInfo(clicked, calendar);
-                //console.log(secondClicked);
-
-                // what if second clicked date is before the first clicked?
-                var firstClickDateObj = new Date(firstClicked.year,
-                    firstClicked.month,
-                    firstClicked.date);
-                var secondClickDateObj = new Date(secondClicked.year,
-                    secondClicked.month,
-                    secondClicked.date);
-
-                if (firstClickDateObj > secondClickDateObj) {
-
-                    var cachedClickedInfo = secondClicked;
-                    secondClicked = firstClicked;
-                    firstClicked = cachedClickedInfo;
-                    selected = {};
-                    selected[firstClicked.year] = {};
-                    selected[firstClicked.year][firstClicked.month] = [firstClicked.date];
-
-                } else if (firstClickDateObj.getTime() ==
-                    secondClickDateObj.getTime()) {
-                    selected = {};
-                    firstClicked = [];
-                    secondClicked = [];
-                    firstClick = false;
-                    secondClick = false;
-                    $(this).removeClass("selected");
-                }
-
-
-                // add between dates to [selected]
-                selected = addChosenDates(firstClicked, secondClicked, selected);
-            }
-            // console.log(selected);
-            selectDates(selected);
-        });
+        // clickedElement = calendar.datesBody.find('div');
+        // clickedElement.on("click", function(){
+        //     clicked = $(this);
+        //     if (clicked.hasClass('past-date')) { return; }
+        //     var whichCalendar = calendar.name;
+        //     console.log(whichCalendar);
+        //     // Understading which element was clicked;
+        //     // var parentClass = $(this).parent().parent().attr('class');
+        //     if (firstClick && secondClick) {
+        //         thirdClicked = getClickedInfo(clicked, calendar);
+        //         var firstClickDateObj = new Date(firstClicked.year,
+        //             firstClicked.month,
+        //             firstClicked.date);
+        //         var secondClickDateObj = new Date(secondClicked.year,
+        //             secondClicked.month,
+        //             secondClicked.date);
+        //         var thirdClickDateObj = new Date(thirdClicked.year,
+        //             thirdClicked.month,
+        //             thirdClicked.date);
+        //         if (secondClickDateObj > thirdClickDateObj
+        //             && thirdClickDateObj > firstClickDateObj) {
+        //             secondClicked = thirdClicked;
+        //             // then choose dates again from the start :)
+        //             bothCals.find(".calendar_content").find("div").each(function(){
+        //                 $(this).removeClass("selected");
+        //             });
+        //             selected = {};
+        //             selected[firstClicked.year] = {};
+        //             selected[firstClicked.year][firstClicked.month] = [firstClicked.date];
+        //             selected = addChosenDates(firstClicked, secondClicked, selected);
+        //         } else { // reset clicks
+        //             selected = {};
+        //             firstClicked = [];
+        //             secondClicked = [];
+        //             firstClick = false;
+        //             secondClick = false;
+        //             bothCals.find(".calendar_content").find("div").each(function(){
+        //                 $(this).removeClass("selected");
+        //             });
+        //         }
+        //     }
+        //     if (!firstClick) {
+        //         firstClick = true;
+        //         firstClicked = getClickedInfo(clicked, calendar);
+        //         selected[firstClicked.year] = {};
+        //         selected[firstClicked.year][firstClicked.month] = [firstClicked.date];
+        //     } else {
+        //         console.log('second click');
+        //         secondClick = true;
+        //         secondClicked = getClickedInfo(clicked, calendar);
+        //         //console.log(secondClicked);
+        //
+        //         // what if second clicked date is before the first clicked?
+        //         var firstClickDateObj = new Date(firstClicked.year,
+        //             firstClicked.month,
+        //             firstClicked.date);
+        //         var secondClickDateObj = new Date(secondClicked.year,
+        //             secondClicked.month,
+        //             secondClicked.date);
+        //
+        //         if (firstClickDateObj > secondClickDateObj) {
+        //
+        //             var cachedClickedInfo = secondClicked;
+        //             secondClicked = firstClicked;
+        //             firstClicked = cachedClickedInfo;
+        //             selected = {};
+        //             selected[firstClicked.year] = {};
+        //             selected[firstClicked.year][firstClicked.month] = [firstClicked.date];
+        //
+        //         } else if (firstClickDateObj.getTime() ==
+        //             secondClickDateObj.getTime()) {
+        //             selected = {};
+        //             firstClicked = [];
+        //             secondClicked = [];
+        //             firstClick = false;
+        //             secondClick = false;
+        //             $(this).removeClass("selected");
+        //         }
+        //
+        //
+        //         // add between dates to [selected]
+        //         selected = addChosenDates(firstClicked, secondClicked, selected);
+        //     }
+        //     // console.log(selected);
+        //     selectDates(selected);
+        // });
 
     }
     function selectDates(selected) {
@@ -253,7 +277,7 @@ $( document ).ready(function() {
             "calHeader": calHeader2,
             "weekline": weekline2,
             "datesBody": datesBody2	}
-    }
+    };
 
 
     var clickedElement;
