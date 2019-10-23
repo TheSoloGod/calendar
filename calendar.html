@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet" type="text/css">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+    <!-- Booostrap JS -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+    <!-- CSS -->
+    <link href="calendar.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="calendar-section">
+        <div class="row">
+
+            <div class="col-sm-6">
+
+                <div class="calendar calendar-first" id="calendar_first">
+                    <div class="calendar_header">
+                        <button class="switch-month switch-left">
+                            <i class="fas fa-angle-double-left"></i>
+                        </button>
+                        <h2></h2>
+                        <button class="switch-month switch-right">
+                            <i class="fas fa-angle-double-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar_weekdays"></div>
+                    <div style="border: 1px solid black">
+                        <div class="calendar_content"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-sm-6">
+
+                <div class="calendar calendar-second" id="calendar_second">
+                    <div class="calendar_header">
+                        <button class="switch-month switch-left">
+                            <i class="fas fa-angle-double-left"></i>
+                        </button>
+                        <h2></h2>
+                        <button class="switch-month switch-right">
+                            <i class="fas fa-angle-double-right"></i>
+                        </button>
+                    </div>
+                    <div class="calendar_weekdays"></div>
+                    <div style="border: 1px solid black">
+                        <div class="calendar_content"></div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div> <!-- End Row -->
+
+    </div> <!-- End Calendar -->
+</div> <!-- End Container -->
+
+<script src="calendar.js"></script>
+</body>
+</html>
